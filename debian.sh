@@ -23,13 +23,6 @@ ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
 sed -i 's/AcceptEnv/#AcceptEnv/g' /etc/ssh/sshd_config
 service ssh restart
 
-# set repo
-wget -O /etc/apt/sources.list "https://raw.githubusercontent.com/kholizsivoi/script/master/sources.list.debian7"
-wget "http://www.dotdeb.org/dotdeb.gpg"
-cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
-sh -c 'echo "deb http://download.webmin.com/download/repository sarge contrib" > /etc/apt/sources.list.d/webmin.list'
-wget -qO - http://www.webmin.com/jcameron-key.asc | apt-key add -
-
 # update
 apt-get update
 
@@ -140,15 +133,6 @@ apt-get -y install squid3
 wget -O /etc/squid3/squid.conf "https://raw.githubusercontent.com/kholizsivoi/script/master/squid3.conf"
 sed -i $MYIP2 /etc/squid3/squid.conf;
 service squid3 restart
-
-# install webmin
-cd
-wget "http://prdownloads.sourceforge.net/webadmin/webmin_1.850_all.deb"
-dpkg --install webmin_1.850_all.deb;
-apt-get -y -f install;
-rm /root/webmin_1.850_all.deb
-sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
-service webmin restart
 
 # blockir torrent
 iptables -A OUTPUT -p tcp --dport 6881:6889 -j DROP
